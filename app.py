@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import pickle
 
-DATASET_PATH = "Covid-19 Cleaned data 2.csv"
+DATASET_PATH = "Covid-19 Cleaned data.csv"
 MODEL_PATH = "random_forest.pkl"
 
 
@@ -11,9 +11,9 @@ def main():
     @st.cache(persist=True)
     def load_dataset() -> pd.DataFrame:
         covid19_df = pd.read_csv(DATASET_PATH, encoding="UTF-8")
-        # covid19_df = pd.DataFrame(np.sort(covid19_df.values, axis=0),
-        #                         index=covid19_df.index,
-        #                         columns=covid19_df.columns)
+        covid19_df = pd.DataFrame(np.sort(covid19_df.values, axis=0),
+                                index=covid19_df.index,
+                                columns=covid19_df.columns)
         return covid19_df
 
     def user_input_features() -> pd.DataFrame:
