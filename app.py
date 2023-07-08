@@ -128,5 +128,5 @@ def main():
             st.image("images/heart-bad.jpg",
                      caption="I'm not satisfied with the condition of your heart! - Dr. Logistic Regression")
             
-            
-main()
+if __name__ == "__main__":
+    main()
