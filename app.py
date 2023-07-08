@@ -127,6 +127,6 @@ def main():
                         f"with a probability of {round(prediction_proba[0][2] * 100, 2)}%.")
             st.image("images/heart-bad.jpg",
                      caption="I'm not satisfied with the condition of your heart! - Dr. Logistic Regression")
-
-if __name__ == "__main__":
-    main()
+            
+            
+main()
