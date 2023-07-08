@@ -51,7 +51,7 @@ def main():
 
     st.set_page_config(
         page_title="COVID-19 Severity Prediction App",
-        page_icon="heart-fav.png"
+        page_icon="images/heart-fav.png"
     )
 
     st.title("COVID-19 Severity Prediction")
@@ -61,7 +61,7 @@ def main():
     col1, col2 = st.columns([1, 3])
 
     with col1:
-        st.image("doctor.png",
+        st.image("images/doctor.png",
                  caption="I'll help you diagnose your heart health! - Dr. Logistic Regression",
                  width=150)
         submit = st.button("Predict")
@@ -115,17 +115,17 @@ def main():
         if prediction == 1:
             st.markdown(f"Based on the provided information, the prediction is that you are in the **Mild Condition** "
                     f"with a probability of {round(prediction_proba[0][0] * 100, 2)}%.")
-            st.image("heart-okay.jpg",
+            st.image("images/heart-okay.jpg",
                      caption="Your heart seems to be okay! - Dr. Logistic Regression")
         elif prediction == 2:
             st.markdown(f"Based on the provided information, the prediction is that you are in the **Moderate Condition** "
                         f"with a probability of {round(prediction_proba[0][1] * 100, 2)}%.")
-            st.image("heart-bad.jpg",
+            st.image("images/heart-bad.jpg",
                      caption="I'm not satisfied with the condition of your heart! - Dr. Logistic Regression")
         else:
             st.markdown(f"Based on the provided information, the prediction is that you are in the **Severe Condition** "
                         f"with a probability of {round(prediction_proba[0][2] * 100, 2)}%.")
-            st.image("heart-bad.jpg",
+            st.image("images/heart-bad.jpg",
                      caption="I'm not satisfied with the condition of your heart! - Dr. Logistic Regression")
 
 if __name__ == "__main__":
