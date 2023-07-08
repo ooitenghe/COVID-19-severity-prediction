@@ -88,7 +88,7 @@ def main():
 
         """)
 
-    covid19 = load_dataset()
+    # covid19 = load_dataset()
 
     st.sidebar.title("Feature Selection")
 
