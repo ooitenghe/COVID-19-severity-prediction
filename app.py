@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 
 DATASET_PATH = "Covid-19 Cleaned Data.csv"
-MODEL_PATH = "logistic_regression.pkl"
+LOG_MODEL_PATH = "logistic_regression.pkl"
 
 def main():
     @st.cache(persist=True)
@@ -101,7 +101,7 @@ def main():
     df = df[:1]
     df.fillna(0, inplace=True)
 
-    rf_model = pickle.load(open(MODEL_PATH, "rb"))
+    rf_model = pickle.load(open(LOG_MODEL_PATH, "rb"))
 
     if submit:
         prediction = rf_model.predict(df)
