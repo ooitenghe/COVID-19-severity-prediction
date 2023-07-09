@@ -5,7 +5,17 @@ import pickle
 
 DATASET_PATH = "Covid-19 Cleaned Data.csv"
 MODEL_PATH = "logistic_regression.pkl"
+import os
 
+# Load the pre-trained Random Forest model
+# MODEL_PATH = "logistic_regression.pkl"
+
+if not os.path.isfile(MODEL_PATH):
+    st.error(f"Model file '{MODEL_PATH}' not found. Please ensure the file exists in the correct location.")
+    st.stop()
+
+with open(MODEL_PATH, "rb") as file:
+    model = pickle.load(file)
 
 def main():
     @st.cache(persist=True)
