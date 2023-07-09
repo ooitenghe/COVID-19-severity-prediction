@@ -101,7 +101,7 @@ def main():
     df = df[:1]
     df.fillna(0, inplace=True)
 
-    rf_model = pickle.load(open("random_forest.pkl", "rb"))
+    rf_model = pickle.load(open(MODEL_PATH, "rb"))
 
     if submit:
         prediction = rf_model.predict(df)
