@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 
 DATASET_PATH = "Covid-19 Cleaned Data.csv"
-MODEL_PATH = "model/random_forest.pkl"
+MODEL_PATH = "random_forest.pkl"
 
 
 def main():
