@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import pickle
 
-DATASET_PATH = "./data/Covid-19_Cleaned_Data.csv"
+DATASET_PATH = ""
 MODEL_PATH = "./model/random_forest.pkl"
 
 def main():
