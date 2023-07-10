@@ -16,7 +16,7 @@ def main():
         return covid19_df
 
     def user_input_features() -> pd.DataFrame:
-        age_cat = st.sidebar.selectbox("Age category", options=["1","2","3","4","5"])
+        age_cat = st.sidebar.selectbox("Age category", options=["<9","10-19","20-24","25-59",">60"])
         gender = st.sidebar.selectbox("Gender", options=["Male", "Female"])
         sore_throat = st.sidebar.selectbox("Sore Throat", options=["No", "Yes"])
         fever = st.sidebar.selectbox("Fever", options=["No", "Yes"])
@@ -27,20 +27,80 @@ def main():
         breathing_difficulties = st.sidebar.selectbox("Breathing Difficulties", options=["No", "Yes"])
         diarrhea = st.sidebar.selectbox("Diarrhea", options=["No", "Yes"])
         other_symptoms = st.sidebar.selectbox("Other Symptoms", options=["No", "Yes"])
+
+        if age_cat == '<9':
+            age_cat = 1
+        elif age_cat == '10-19':
+            age_cat = 2
+        elif age_cat == '20-24':
+            age_cat = 3
+        elif age_cat == '25-59':
+            age_cat = 4
+        else:
+            age_cat = 5
+
         if gender == 'Male':
             gender = 1
+        else:
+            gender = 0
+        
+        if sore_throat == 'Yes':
+            sore_throat = 1
+        else:
+            sore_throat = 0
+        
+        if fever == 'Yes':
+            fever = 1
+        else:
+            fever = 0
+
+        if flu == 'Yes':
+            flu = 1
+        else:
+            flu = 0
+
+        if loss_of_taste == 'Yes':
+            loss_of_taste = 1
+        else:
+            loss_of_taste = 0
+
+        if loss_of_smell == 'Yes':
+            loss_of_smell = 1
+        else:
+            loss_of_smell = 0
+
+        if cough == 'Yes':
+            cough = 1
+        else:
+            cough = 0
+
+        if breathing_difficulties == 'Yes':
+            breathing_difficulties = 1
+        else:
+            breathing_difficulties = 0
+
+        if diarrhea == 'Yes':
+            diarrhea = 1
+        else:
+            diarrhea = 0
+
+        if other_symptoms == 'Yes':
+            other_symptoms = 1
+        else:
+            other_symptoms = 0
+        
         features = pd.DataFrame({
-            "AgeCategory": [age_cat],
-            "Gender": [gender],
-            "SoreThroat": [sore_throat],
-            "Fever": [fever],
-            "Flu": [flu],
-            "LossOfTaste": [loss_of_taste],
-            "LossOfSmell": [loss_of_smell],
-            "Cough": [cough],
-            "BreathingDifficulties": [breathing_difficulties],
-            "Diarrhea": [diarrhea],
-            "OtherSymptoms": [other_symptoms]
+            "umur": [age_cat],
+            "jantina": [gender],
+            "sakit tekak": [sore_throat],
+            "demam": [fever],
+            "selesema": [flu],
+            "hilang deria rasa": [loss_of_taste],
+            "hilang deria bau": [loss_of_smell],
+            "batuk": [cough],
+            "sesak nafas": [breathing_difficulties],
+            "cirit birit": [diarrhea],
+            "lain-lain": [other_symptoms]
         })
 
         return features
@@ -92,14 +152,15 @@ def main():
     df = pd.concat([input_df, covid19], axis=0)
     df = df.drop(columns=["hasil dignosis"])
 
-    cat_cols = ["umur", "jantina", "sakit tekak", "demam", "hilang deria rasa",
-                "hilang deria bau", "batuk", "sesak nafas", "cirit birit", "lain-lain"]
+    cat_cols = ["umur", "jantina", "sakit tekak", "demam", "selesema", "hilang deria rasa","hilang deria bau", "batuk", "sesak nafas", "cirit birit", "lain-lain"]
     for cat_col in cat_cols:
         dummy_col = pd.get_dummies(df[cat_col], prefix=cat_col)
         df = pd.concat([df, dummy_col], axis=1)
-        del df[cat_col]
+        df = df[input_df.columns]  # Keep only the original input columns
+        # del df[cat_col]
 
-    df = df[:1]
+    
+    df = df.iloc[:1, :]  # Keep only the first row
     df.fillna(0, inplace=True)
 
     rf_model = pickle.load(open(MODEL_PATH, "rb"))
