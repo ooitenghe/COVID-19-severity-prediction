@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import pickle
 
-DATASET_PATH = "Covid-19 Cleaned Data.csv"
-MODEL_PATH = "random_forest.pkl"
+DATASET_PATH = "./data/Covid-19_Cleaned_Data.csv"
+MODEL_PATH = "./model/random_forest.pkl"
 
 def main():
     @st.cache(persist=True)
@@ -27,7 +27,8 @@ def main():
         breathing_difficulties = st.sidebar.selectbox("Breathing Difficulties", options=["No", "Yes"])
         diarrhea = st.sidebar.selectbox("Diarrhea", options=["No", "Yes"])
         other_symptoms = st.sidebar.selectbox("Other Symptoms", options=["No", "Yes"])
-
+        if gender == 'Male':
+            gender = 1
         features = pd.DataFrame({
             "AgeCategory": [age_cat],
             "Gender": [gender],
