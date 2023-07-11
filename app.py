@@ -7,7 +7,7 @@ DATASET_PATH = "./data/Covid-19_Cleaned_Data.csv"
 MODEL_PATH = "./model/random_forest.pkl"
 
 def main():
-    @st.cache(persist=True)
+    @st.cache_data(persist=True)
     def load_dataset() -> pd.DataFrame:
         covid19_df = pd.read_csv(DATASET_PATH, encoding="UTF-8")
         covid19_df = pd.DataFrame(np.sort(covid19_df.values, axis=0),
@@ -107,46 +107,45 @@ def main():
 
     st.set_page_config(
         page_title="COVID-19 Severity Prediction App",
-        page_icon="images/heart-fav.png"
+        page_icon="images/covid.jpg"
     )
 
     st.title("COVID-19 Severity Prediction")
-    st.subheader("Are you wondering about the condition of your heart? "
+    st.subheader("Are you wondering about the severity of your COVID-19 condition? "
                  "This app will help you to diagnose it!")
 
     col1, col2 = st.columns([1, 3])
 
     with col1:
-        st.image("images/doctor.png",
-                 caption="I'll help you diagnose your COVID-19 condition!",
-                 width=150)
-        submit = st.button("Predict")
+        st.image("images/doctor.jpeg")
     with col2:
         st.markdown("""
-        Did you know that machine learning models can help you
-        predict heart disease pretty accurately? In this app, you can
-        estimate your chance of heart disease (yes/no) in seconds!
+        Did you know that machine learning models can help predict the severity of COVID-19?
+        In this app, you can estimate your COVID-19 severity (mild, moderate, or severe) based on your symptoms.
 
-        Here, a logistic regression model using an undersampling technique
-        was constructed using survey data of over 300k US residents from the year 2020.
-        This application is based on it because it has proven to be better than the random forest
-        (it achieves an accuracy of about 80%, which is quite good).
+        Coronavirus disease (COVID-19) is an infectious disease caused by the SARS-CoV-2 virus.
+        Most people infected with the virus will experience mild to moderate respiratory illness and recover without requiring special treatment.
+        However, some will become seriously ill and require medical attention. 
+        Older people and those with underlying medical conditions like cardiovascular disease, diabetes, chronic respiratory disease, or cancer are more likely to develop serious illness. 
+        Anyone can get sick with COVID-19 and become seriously ill or die at any age. 
 
-        To predict your heart disease status, simply follow the steps bellow:
-        1. Enter the parameters that best descibe you;
-        2. Press the "Predict" button and wait for the result.
+        To predict your COVID-19 severity, follow these steps:
+        1. To start the prediction, first you need to select your age category and gender.
+        2. Select the parameters that best describe your symptoms like fever, sore throat, flu, loss of smell, loss of taste, etc.
+        3. Press the "Predict" button and wait for the result.
 
-        **Keep in mind that this results is not equivalent to a medical diagnosis!
-        This model would never be adopted by health care facilities because of its less
-        than perfect accuracy, so if you have any problems, consult a human doctor.**
+        **Keep in mind that this result is not equivalent to a medical diagnosis!
+        Consult a healthcare professional for accurate diagnosis and advice.**
 
         **Author: Ooi Teng He**
 
         """)
+        submit = st.button("Predict")
 
     covid19 = load_dataset()
 
     st.sidebar.title("Feature Selection")
+    st.sidebar.image("images/heart-sidebar.png", width=100)
 
     input_df = user_input_features()
     df = pd.concat([input_df, covid19], axis=0)
@@ -172,18 +171,30 @@ def main():
         if prediction == 1:
             st.markdown(f"Based on the provided information, the prediction is that you are in the **Mild Condition** "
                     f"with a probability of {round(prediction_proba[0][0] * 100, 2)}%.")
-            st.image("images/heart-okay.jpg",
-                     caption="Your heart seems to be okay! - Dr. Logistic Regression")
+            st.image("images/mild.jpg",
+                     use_column_width=True,  # Adjusts the image width to the column width
+                     output_format="JPEG",  # Output format of the image
+                     width=300,  # Adjust the width of the image as desired
+            )
+            st.markdown('<p style="text-align: center;">Your COVID-19 condition seems to be mild!</p>', unsafe_allow_html=True)
         elif prediction == 2:
             st.markdown(f"Based on the provided information, the prediction is that you are in the **Moderate Condition** "
                         f"with a probability of {round(prediction_proba[0][1] * 100, 2)}%.")
-            st.image("images/heart-bad.jpg",
-                     caption="I'm not satisfied with the condition of your heart! - Dr. Logistic Regression")
+            st.image("images/moderate.jpg",
+                     use_column_width=True,  # Adjusts the image width to the column width
+                     output_format="JPEG",  # Output format of the image
+                     width=300,  # Adjust the width of the image as desired
+            )
+            st.markdown('<p style="text-align: center;">Your COVID-19 condition seems to be moderate!</p>', unsafe_allow_html=True)
         else:
             st.markdown(f"Based on the provided information, the prediction is that you are in the **Severe Condition** "
                         f"with a probability of {round(prediction_proba[0][2] * 100, 2)}%.")
-            st.image("images/heart-bad.jpg",
-                     caption="I'm not satisfied with the condition of your heart! - Dr. Logistic Regression")
+            st.image("images/severe.jpeg",
+                    use_column_width=True,  # Adjusts the image width to the column width
+                    output_format="JPEG",  # Output format of the image
+                    width=300,  # Adjust the width of the image as desired
+            )
+            st.markdown('<p style="text-align: center;">Your COVID-19 condition seems to be severe!</p>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
