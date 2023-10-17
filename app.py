@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import pickle
 
-DATASET_PATH = "./data/Covid-19_Cleaned_Data.csv"
-MODEL_PATH = "./model/random_forest.pkl"
+DATASET_PATH = "./data/Covid-19 Cleaned Data.csv"
+MODEL_PATH = "./model/random_forest_model.pkl"
 
 def main():
     @st.cache_data(persist=True)
@@ -27,6 +27,7 @@ def main():
         breathing_difficulties = st.sidebar.selectbox("Breathing Difficulties", options=["No", "Yes"])
         diarrhea = st.sidebar.selectbox("Diarrhea", options=["No", "Yes"])
         other_symptoms = st.sidebar.selectbox("Other Symptoms", options=["No", "Yes"])
+        comorbid = st.sidebar.selectbox("Comorbid", options=["No", "Yes"])
 
         if age_cat == '<9':
             age_cat = 1
@@ -88,7 +89,12 @@ def main():
             other_symptoms = 1
         else:
             other_symptoms = 0
-        
+
+        if comorbid == 'Yes':
+            comorbid = 1
+        else:
+            comorbid = 0
+
         features = pd.DataFrame({
             "umur": [age_cat],
             "jantina": [gender],
@@ -100,7 +106,8 @@ def main():
             "batuk": [cough],
             "sesak nafas": [breathing_difficulties],
             "cirit birit": [diarrhea],
-            "lain-lain": [other_symptoms]
+            "lain-lain": [other_symptoms],
+            "komorbid": [comorbid]
         })
 
         return features
@@ -137,7 +144,7 @@ def main():
         **Keep in mind that this result is not equivalent to a medical diagnosis!
         Consult a healthcare professional for accurate diagnosis and advice.**
 
-        **Author: Ooi Teng He**
+
 
         """)
         submit = st.button("Predict")
@@ -151,13 +158,11 @@ def main():
     df = pd.concat([input_df, covid19], axis=0)
     df = df.drop(columns=["hasil dignosis"])
 
-    cat_cols = ["umur", "jantina", "sakit tekak", "demam", "selesema", "hilang deria rasa","hilang deria bau", "batuk", "sesak nafas", "cirit birit", "lain-lain"]
+    cat_cols = ["umur", "jantina", "sakit tekak", "demam", "selesema", "hilang deria rasa","hilang deria bau", "batuk", "sesak nafas", "cirit birit", "lain-lain", "komorbid"]
     for cat_col in cat_cols:
         dummy_col = pd.get_dummies(df[cat_col], prefix=cat_col)
         df = pd.concat([df, dummy_col], axis=1)
         df = df[input_df.columns]  # Keep only the original input columns
-        # del df[cat_col]
-
     
     df = df.iloc[:1, :]  # Keep only the first row
     df.fillna(0, inplace=True)
